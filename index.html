@@ -10,130 +10,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-<style>
-  :root{
-    --bg:#ffffff;
-    --cream:#f6f3ee;
-    --ink:#161512;
-    --muted:#6f6a62;
-    --gold:#a37e3c;
-    --line:#e8e2d7;
-  }
-  *{box-sizing:border-box;margin:0;padding:0}
-  html{scroll-behavior:smooth}
-  body{
-    font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
-    color:var(--ink);background:var(--bg);line-height:1.6;-webkit-font-smoothing:antialiased;
-  }
-  a{color:inherit;text-decoration:none}
-  img{max-width:100%;display:block}
-  .serif{font-family:'Cormorant Garamond',Georgia,serif}
-  .wrap{max-width:1200px;margin:0 auto;padding:0 28px}
-  .eyebrow{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);font-weight:600}
-
-  /* Buttons */
-  .btn{
-    display:inline-block;padding:15px 34px;border:1px solid var(--ink);background:var(--ink);color:#fff;
-    font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:500;transition:.25s ease;cursor:pointer;
-  }
-  .btn:hover{background:transparent;color:var(--ink)}
-  .btn--ghost{background:transparent;color:var(--ink)}
-  .btn--ghost:hover{background:var(--ink);color:#fff}
-  .btn--light{border-color:#fff;background:#fff;color:var(--ink)}
-  .btn--light:hover{background:transparent;color:#fff}
-
-  /* Announcement bar */
-  .announce{background:var(--ink);color:#fff;text-align:center;font-size:11px;letter-spacing:.16em;text-transform:uppercase;padding:10px 16px}
-  .announce b{color:#e7c98a;font-weight:600}
-
-  /* Nav */
-  header.nav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
-  .nav-inner{display:flex;align-items:center;justify-content:space-between;height:72px}
-  .brand{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;letter-spacing:.18em;text-transform:uppercase}
-  .nav-links{display:flex;gap:30px;align-items:center}
-  .nav-links a{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);transition:.2s}
-  .nav-links a:hover{color:var(--ink)}
-  .nav-cta{font-size:12px;letter-spacing:.14em;text-transform:uppercase;border-bottom:1px solid var(--ink);padding-bottom:3px}
-
-  /* Hero */
-  .hero{background:radial-gradient(120% 120% at 80% 0%,#fbf8f3 0%,#efe9df 55%,#e6ddd0 100%);padding:96px 0 104px;text-align:center;position:relative;overflow:hidden}
-  .hero h1{font-size:clamp(40px,7vw,82px);font-weight:500;line-height:1.04;margin:18px auto 22px;max-width:14ch}
-  .hero p{max-width:50ch;margin:0 auto 34px;color:var(--muted);font-size:17px}
-  .hero .disc{margin-top:22px;font-size:11px;color:var(--muted);letter-spacing:.04em}
-
-  /* Section heads */
-  .sec{padding:84px 0}
-  .sec-head{text-align:center;max-width:60ch;margin:0 auto 46px}
-  .sec-head h2{font-size:clamp(30px,4.5vw,46px);font-weight:500;margin:12px 0 14px}
-  .sec-head p{color:var(--muted)}
-
-  /* Category cards */
-  .feature{position:relative;height:360px;border-radius:2px;overflow:hidden;display:flex;align-items:flex-end;
-    background:linear-gradient(125deg,#e9ded2 0%,#cdb9a4 100%);margin-bottom:16px}
-  .cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
-  .cat{position:relative;height:300px;border-radius:2px;overflow:hidden;display:flex;align-items:flex-end;transition:.4s ease}
-  .cat:hover,.feature:hover{transform:translateY(-4px)}
-  .cat .label,.feature .label{position:relative;z-index:2;padding:26px 28px;width:100%}
-  .cat .label .k,.feature .label .k{font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:600;display:block}
-  .cat .label .s,.feature .label .s{font-size:11px;letter-spacing:.18em;text-transform:uppercase;opacity:.8;margin-top:6px;display:inline-block}
-  .cat::after,.feature::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.42),rgba(0,0,0,0) 55%);z-index:1}
-  .feature .label .k{font-size:46px}
-  .light{color:#fff}.light .s{opacity:.9}
-  .c-women{background:linear-gradient(125deg,#e9ded2,#cdb9a4)}
-  .c-men{background:linear-gradient(135deg,#2f343a,#171a1e)}
-  .c-kids{background:linear-gradient(135deg,#efe7dd,#d8c7b6)}
-  .c-beauty{background:linear-gradient(135deg,#e9d4cf,#c79f99)}
-  .c-home{background:linear-gradient(135deg,#dad7cb,#b1aa98)}
-
-  /* Sub-edit links */
-  .editbar{background:var(--cream)}
-  .chips{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:8px}
-  .chip{border:1px solid var(--line);background:#fff;padding:11px 20px;font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);transition:.2s}
-  .chip:hover{border-color:var(--ink)}
-
-  /* Benefits */
-  .bens{display:grid;grid-template-columns:repeat(4,1fr);gap:34px}
-  .ben{text-align:center}
-  .ben svg{width:30px;height:30px;stroke:var(--gold);fill:none;stroke-width:1.4;margin:0 auto 16px}
-  .ben h3{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;margin-bottom:6px}
-  .ben p{font-size:14px;color:var(--muted)}
-
-  /* Newsletter */
-  .news{background:var(--ink);color:#fff;text-align:center}
-  .news h2{color:#fff}
-  .news p{color:#cfc8bd}
-  .news form{display:flex;gap:10px;max-width:480px;margin:26px auto 0}
-  .news input{flex:1;padding:15px 18px;border:1px solid #444;background:#101010;color:#fff;font-size:14px}
-  .news input::placeholder{color:#8c867c}
-  .news .ok{margin-top:16px;color:#e7c98a;font-size:14px;min-height:20px}
-
-  /* Disclosure */
-  .disclosure{background:var(--cream);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
-  .disclosure .wrap{padding-top:30px;padding-bottom:30px}
-  .disclosure p{font-size:12.5px;color:var(--muted);max-width:90ch;margin:0 auto;text-align:center}
-  .disclosure b{color:var(--ink)}
-
-  /* Footer */
-  footer{padding:54px 0 40px;text-align:center}
-  footer .brand{font-size:22px;margin-bottom:14px}
-  footer .fnav{display:flex;gap:26px;justify-content:center;flex-wrap:wrap;margin:18px 0}
-  footer .fnav a{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
-  footer .fnav a:hover{color:var(--ink)}
-  footer .copy{font-size:12px;color:var(--muted);margin-top:18px}
-
-  @media(max-width:860px){
-    .nav-links a:not(.nav-cta){display:none}
-    .cat-grid{grid-template-columns:repeat(2,1fr)}
-    .bens{grid-template-columns:repeat(2,1fr);gap:30px}
-    .feature{height:300px}
-  }
-  @media(max-width:520px){
-    .cat-grid{grid-template-columns:1fr}
-    .bens{grid-template-columns:1fr}
-    .news form{flex-direction:column}
-  }
-</style>
+<link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
@@ -146,8 +23,8 @@
     <nav class="nav-links">
       <a href="#" data-shop="/women">Women</a>
       <a href="#" data-shop="/men">Men</a>
-      <a href="#" data-shop="/kids">Kids</a>
       <a href="#" data-shop="/beauty">Beauty</a>
+      <a href="journal.html">Journal</a>
       <a href="#" class="nav-cta" data-shop="/">Shop Ounass</a>
     </nav>
   </div>
@@ -273,6 +150,7 @@
         <a href="#" data-shop="/men">Men</a>
         <a href="#" data-shop="/kids">Kids</a>
         <a href="#" data-shop="/beauty">Beauty</a>
+        <a href="journal.html">Journal</a>
         <a href="#" data-shop="/">Shop Ounass</a>
       </nav>
       <div class="copy">© <span id="year">2026</span> <span data-brand>The Edit</span> · A curated luxury showcase in partnership with Ounass.</div>
@@ -281,78 +159,6 @@
 
 </main>
 
-<script>
-/* =========================================================================
-   ⚙️  SETUP — complete these AFTER you are approved for the Ounass programme
-   =========================================================================
-
-   STEP A — BRAND_NAME
-     Your own publisher/site name. This site is YOURS (an affiliate showcase);
-     it is intentionally NOT presented as the official Ounass site.
-
-   STEP B — PARTNERIZE_PREFIX  (this is how you get paid)
-     Once approved, Partnerize gives you a tracking deep-link that looks like:
-         https://prf.hn/click/camref:1100lXXXXX/destination:
-     Copy everything UP TO AND INCLUDING "destination:" and paste it below.
-     Every "Shop" button then routes shoppers to Ounass through YOUR link, so
-     qualifying sales are tracked (30-day cookie) and credited to your account.
-
-   STEP C — OUNASS_BASE
-     Set to the storefront for the market you're promoting (.ae / .com / .sa…).
-     Then sanity-check the category paths on the buttons against the live site.
-
-   Until a real PARTNERIZE_PREFIX is set, buttons link straight to Ounass
-   (NO commission) so you can preview the site safely.
-   ========================================================================= */
-  const BRAND_NAME        = "The Edit";
-  const PARTNERIZE_PREFIX = "PASTE_YOUR_PARTNERIZE_CLICK_PREFIX_HERE";
-  const OUNASS_BASE       = "https://www.ounass.ae";
-
-  /* ---- wiring (no need to edit below) ---- */
-  function shopUrl(path){
-    const dest = OUNASS_BASE + path;
-    if (PARTNERIZE_PREFIX.indexOf("PASTE_") === 0) return dest;        // not configured yet
-    return PARTNERIZE_PREFIX + encodeURIComponent(dest);              // tracked link
-  }
-
-  document.addEventListener("DOMContentLoaded", function(){
-    // Apply brand name everywhere
-    document.querySelectorAll("[data-brand]").forEach(function(el){ el.textContent = BRAND_NAME; });
-    document.title = BRAND_NAME + " — A Curated Luxury Showcase, in Partnership with Ounass";
-
-    // Turn every [data-shop] into a tracked, SEO-correct affiliate link
-    document.querySelectorAll("[data-shop]").forEach(function(a){
-      a.href = shopUrl(a.getAttribute("data-shop"));
-      a.target = "_blank";
-      a.rel = "sponsored noopener";   // 'sponsored' is Google's recommended rel for affiliate links
-    });
-
-    // Current year
-    var y = document.getElementById("year"); if (y) y.textContent = new Date().getFullYear();
-
-    // Newsletter — placeholder handler.
-    // To collect emails for real, point the form at your email provider
-    // (Mailchimp / ConvertKit / Beehiiv) or a form endpoint (e.g. Formspree),
-    // OR set NEWSLETTER_ENDPOINT below to a URL that accepts a POST {email}.
-    const NEWSLETTER_ENDPOINT = ""; // e.g. "https://formspree.io/f/xxxxxxx"
-    var form = document.getElementById("newsForm");
-    if (form){
-      form.addEventListener("submit", function(e){
-        e.preventDefault();
-        var email = document.getElementById("newsEmail").value.trim();
-        var ok = document.getElementById("newsOk");
-        if (!email) return;
-        if (NEWSLETTER_ENDPOINT){
-          fetch(NEWSLETTER_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify({email:email})})
-            .then(function(){ ok.textContent = "Thank you — you're on the list."; form.reset(); })
-            .catch(function(){ ok.textContent = "Something went wrong. Please try again."; });
-        } else {
-          ok.textContent = "Thanks! (Connect a NEWSLETTER_ENDPOINT in the code to start collecting emails.)";
-          form.reset();
-        }
-      });
-    }
-  });
-</script>
+<script src="affiliate.js" defer></script>
 </body>
 </html>

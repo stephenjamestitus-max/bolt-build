@@ -1,0 +1,53 @@
+name: Generate content
+
+# Writes a new journal post with Claude, then commits it back to the repo.
+# Runs on a schedule (offline, no input needed) and can be triggered by hand.
+#
+# ⚠️ GitHub only runs scheduled workflows from the repository's DEFAULT branch.
+#    While this lives on a feature branch, use "Run workflow" (workflow_dispatch)
+#    to test it. To get the cron firing automatically, merge this to the default
+#    branch (or make this the default branch).
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 6 * * 1,4"   # Mon & Thu, 06:00 UTC — a sane, non-spammy cadence
+
+permissions:
+  contents: write
+
+concurrency:
+  group: generate-content
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Generate a new post with Claude
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CLAUDE_MODEL: ${{ vars.CLAUDE_MODEL }}     # optional repo variable
+          SITE_URL: ${{ vars.SITE_URL }}             # optional repo variable
+          BRAND_NAME: ${{ vars.BRAND_NAME }}         # optional repo variable
+        run: node scripts/generate-post.mjs
+
+      - name: Commit & push the new content
+        run: |
+          git config user.name "edit-content-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "No changes to commit."
+            exit 0
+          fi
+          git commit -m "content: add new journal post"
+          git push origin HEAD:${{ github.ref_name }}

@@ -1,62 +1,97 @@
-# The Edit — Ounass Affiliate Showcase
+# The Edit — Ounass Affiliate Site + Claude Content Engine
 
-A self-contained, single-file luxury showcase site (`index.html`) that routes shoppers
-to **Ounass** through **your** Partnerize affiliate link. No build step, no dependencies —
-host it anywhere static (GitHub Pages, Netlify, Vercel, Cloudflare Pages).
+A self-contained luxury affiliate **showcase site** that routes shoppers to **Ounass**
+through *your* Partnerize link, plus a **Claude-powered GitHub automation** that writes a
+new SEO article on a schedule and publishes it for you — running while you're offline.
 
-> This site is an **independent affiliate showcase**. It is intentionally *not* presented
-> as the official Ounass site, and it carries a clear affiliate disclosure. Keep it that way.
+No build step, no dependencies. Host the static files anywhere (GitHub Pages, Netlify,
+Vercel, Cloudflare Pages).
+
+> This is an **independent affiliate showcase** — intentionally *not* presented as the
+> official Ounass site, and it carries a clear affiliate disclosure. Keep it that way.
 
 ---
 
-## How this actually makes money (read this first)
+## How this actually makes money (read first)
 
-Affiliate income is real, but it is **not automatic**. The chain is:
+Affiliate income is real but **not automatic**, and **the automation does not change that.**
 
-1. **You** sign up + get approved (only you can do this — see Setup below).
-2. **Real people** visit this site and click a **Shop** link.
+1. **You** sign up + get approved on Partnerize (only you can do this).
+2. **Real people** visit and click a **Shop** link.
 3. They make a **genuine purchase** on Ounass within the 30-day cookie window.
-4. Partnerize tracks it and credits **your** commission.
+4. Partnerize credits **your** commission.
 
-The code's job is only step 2→3: make the links track correctly and convert as well as
-possible. Steps 1 and "bring real traffic" are on you.
+The automation runs **step "make content"** while you sleep. It does **not** run **step
+"get visitors"** — that distribution is the irreducible human part (≈15 min on the days
+you're around: posting/pinning the new articles, being a real person in a couple of GCC
+communities). An automated site with no distribution gets seen by nobody.
 
-**Do NOT** try to fake clicks, stuff cookies, click your own links repeatedly, or buy bot
-traffic. That is affiliate fraud — it gets your account banned and unpaid, and it's illegal.
-Real traffic is the only version that works.
+**Never** fake clicks, stuff cookies, click your own links, or buy bot traffic — that's
+fraud, it gets you banned and unpaid, and it's illegal.
 
 ---
 
-## Setup (after you're approved)
+## What's in here
 
-Open `index.html` and edit the config block near the bottom (`<script>`):
+| File | Purpose |
+|---|---|
+| `index.html` | Luxury landing/showcase page |
+| `journal.html` | Auto-generated list of articles (regenerated each run) |
+| `posts/` | Generated article pages |
+| `styles.css` | Shared styling for every page |
+| `affiliate.js` | **One place** to set your brand + tracking link (used by every page) |
+| `scripts/generate-post.mjs` | The Claude content engine (Node, no deps) |
+| `.github/workflows/content.yml` | Scheduled job: write a post → commit it back |
+| `.github/workflows/deploy.yml` | Publishes the site to GitHub Pages |
+| `sitemap.xml`, `robots.txt`, `posts.json` | SEO + post manifest (auto-maintained) |
+
+---
+
+## Setup
+
+### 1) Wire your affiliate link (after Partnerize approval)
+Edit the three values at the top of **`affiliate.js`** — they propagate to every page:
 
 | Setting | What to do |
 |---|---|
-| `BRAND_NAME` | Your own publisher/site name. |
-| `PARTNERIZE_PREFIX` | After approval, Partnerize gives you a deep link like `https://prf.hn/click/camref:1100lXXXXX/destination:` — paste everything **up to and including** `destination:`. **This is how you get paid.** |
-| `OUNASS_BASE` | The storefront for your market (`https://www.ounass.ae`, `.com`, `.sa`, …). |
+| `BRAND_NAME` | Your own site name |
+| `PARTNERIZE_PREFIX` | Paste your Partnerize deep-link prefix (everything up to and including `destination:`). **This is how you get paid.** |
+| `OUNASS_BASE` | Your market's storefront (`https://www.ounass.ae`, `.com`, `.sa`…) |
 
-Until `PARTNERIZE_PREFIX` is set, every button links straight to Ounass (no commission) so
-you can preview the site safely. Also double-check the category paths (`/women`, `/men`,
-`/beauty`, …) against the live Ounass site and adjust if needed.
+Until the prefix is set, links go straight to Ounass (no commission) so you can preview.
 
-### Joining the programme (you must do this — I can't)
-1. Create a **Partnerize** account with your business/publisher details.
-2. Search for **“Ounass”** and submit your application.
-3. On approval, generate your tracking link and complete Setup above.
+### 2) Turn on the Claude content automation
+1. Get an Anthropic API key: <https://console.anthropic.com>.
+2. Repo → **Settings → Secrets and variables → Actions → New repository secret**
+   - Name: `ANTHROPIC_API_KEY` — Value: your key.
+3. *(Optional)* add repo **Variables** (same screen): `SITE_URL` (your live domain, for the
+   sitemap), `BRAND_NAME`, and `CLAUDE_MODEL`.
+4. Test it now: **Actions → "Generate content" → Run workflow**. It writes a post, commits
+   it, and the journal/sitemap update automatically.
+
+**Cadence & cost:** default is Mon & Thu (`content.yml` cron). Each article is a few US
+cents on `claude-opus-4-8` (the default). To cut cost, set the `CLAUDE_MODEL` variable to
+`claude-sonnet-4-6` or `claude-haiku-4-5`.
+
+> ⚠️ **Scheduled runs only fire from the repo's _default_ branch** (a GitHub rule). This is
+> on a feature branch, so the cron won't fire until you merge it to the default branch (or
+> make this the default). Until then, use **Run workflow** to trigger it manually.
+
+### 3) Publish the site (GitHub Pages)
+**Settings → Pages → Source = "GitHub Actions"**, then push (or run the "Deploy site"
+workflow). Pages deploys from the default branch by default — merge there, or adjust the
+branch in `deploy.yml` / your Pages settings.
 
 ---
 
-## Optional: collect emails
-The "Join the List" form is a placeholder. To collect for real, set `NEWSLETTER_ENDPOINT`
-in the script to a form endpoint (e.g. Formspree) or wire it to Mailchimp / ConvertKit / Beehiiv.
+## Collecting emails (optional)
+The "Join the List" form is a placeholder. Set `NEWSLETTER_ENDPOINT` in `affiliate.js` to a
+form endpoint (Formspree) or wire it to Mailchimp / ConvertKit / Beehiiv.
 
 ---
 
-## Roadmap / next "automation" pieces (all legitimate)
-- **Content engine** — generate SEO gift-guide / brand-edit posts that embed your links.
-- **Social captions** — batch-generate post copy for Instagram/TikTok/Pinterest.
-- **Product feed** — render featured products from the programme's product feed.
-
-Ask and I'll build any of these next.
+## The honest roadmap
+- **Distribution** is the lever that turns published posts into clicks — Pinterest (fastest
+  organic channel from zero), 2–3 GCC communities, and your own network.
+- Want more automation I can build next: batch social-caption generation, a Pinterest-ready
+  image/pin template, or rendering live products from the programme's product feed.
